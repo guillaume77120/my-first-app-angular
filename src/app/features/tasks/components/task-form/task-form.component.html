@@ -1,21 +1,15 @@
 <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
-  
-  <div>
-    <label>Titre de la tâche</label>
+  <div class="input-tache">
     <input type="text" formControlName="title" placeholder="Ex: Apprendre Angular">
+    <div class="right">
+      <select formControlName="priority">
+        <option value="low">Faible</option>
+        <option value="medium">Moyenne</option>
+        <option value="high">Urgent</option>
+      </select>
+      <button type="submit" [disabled]="taskForm.invalid">
+        +
+      </button>
+    </div>
   </div>
-
-  <div>
-    <label>Niveau de priorité</label>
-    <select formControlName="priority">
-      <option value="low">Faible (Low)</option>
-      <option value="medium">Moyenne (Medium)</option>
-      <option value="high">Urgent (High)</option>
-    </select>
-  </div>
-
-  <button type="submit" [disabled]="taskForm.invalid">
-    Ajouter la tâche
-  </button>
-
 </form>

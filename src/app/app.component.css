@@ -1,0 +1,27 @@
+main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: inherit;
+}
+
+.fond-tache{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: whitesmoke;
+    padding: 30px;
+    border-radius: 15px;
+}
+
+.ajout-tache{
+    display: flex;
+}
+
+.list-tache{
+    display: flex;
+}
+
+h1{
+    margin-bottom: 15px;
+}

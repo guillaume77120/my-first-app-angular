@@ -1,0 +1,29 @@
+.input-tache{
+    display: flex;
+}
+
+.right{
+    display: flex;
+    margin-left: auto;
+}
+
+input{
+    display: flex;
+    border-radius: 5px;
+    background-color: white;
+    padding-left: 5px;
+}
+
+select{
+    background-color: #06c7ad;
+    padding: 5px 10px 5px 10px;
+    border-radius: 5px;
+    color: white;
+}
+
+button{
+    background-color: rgb(6, 199, 173);
+    padding: 5px 10px 5px 10px;
+    border-radius: 5px;
+    color: white;
+}
