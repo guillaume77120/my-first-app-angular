@@ -1,18 +1,23 @@
 <div class="task-container">
   <h2>Ma Liste de Tâches</h2>
   <div class="filter-bar">
-    <span>Filtrer par : </span>
-    <button (click)="applyFilter('all')">Toutes</button>
-    <button (click)="applyFilter('high')" style="color: red;">Urgentes</button>
-    <button (click)="applyFilter('medium')" style="color: orange;">Moyennes</button>
-    <button (click)="applyFilter('low')" style="color: green;">Basses</button>
+    <select name="" id="">
+      <option value="" (click)="applyFilter('all')">Toutes</option>
+      <option value="" (click)="applyFilter('high')">Urgentes</option>
+      <option value="" (click)="applyFilter('medium')">Moyennes</option>
+      <option value="" (click)="applyFilter('low')">Basses</option>
+    </select>
   </div>
   @for (task of tasks$ | async; track task.id) {
     <div class="task-card">
-      <h3>{{ task.title }}</h3>
-      <p>Statut : <strong>{{ task.status }}</strong></p>
-      <p>Priorité : {{ task.priority }}</p>
-      <button (click)="onDelete(task.id)">Supprimer</button>
+      <input
+        type="checkbox"
+        [checked]="task.status === 'done'"
+        (change)="toggleDone(task)"
+      >
+      <h3 class="titre-tache" [class.done]="task.status === 'done'">{{ task.title }}</h3>
+      <p class="priority-tache">Priorité : {{ task.priority }}</p>
+      <mat-icon svgIcon="trash" (click)="onDelete(task.id)"></mat-icon>
     </div>
   } @empty {
     <p>Aucune tâche pour le moment. C'est l'heure de se reposer ! ☕</p>

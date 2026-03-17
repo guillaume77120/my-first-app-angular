@@ -1,0 +1,47 @@
+.task-container{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+select{
+    background-color: #06c7ad;
+    padding: 5px 10px 5px 10px;
+    border-radius: 5px;
+    color: white;
+}
+
+h2{
+    justify-content: center;
+    display: flex;
+}
+
+.task-card{
+    display: flex;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    height: auto; 
+    gap: inherit;
+}
+
+.trash{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+mat-icon{
+    width:20px;
+    height:20px;
+    cursor:pointer;
+}
+
+mat-icon:hover{
+    fill: red;
+}
+
+.done{
+  text-decoration: line-through;
+  opacity:0.6;
+}

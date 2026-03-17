@@ -44,13 +44,23 @@ export class TaskService {
     this.tasksSubject.next(updatedTasks);
   }
 
-  // 5. Méthode pour changer le statut
-  updateTaskStatus(id: string, newStatus: 'todo' | 'doing' | 'done'): void {
-    const updatedTasks = this.tasksSubject.value.map(task => 
-      task.id === id ? { ...task, status: newStatus } : task
-    );
-    this.tasksSubject.next(updatedTasks);
-  }
+  updateStatus(id: string, status: Task['status']) {
+
+    const tasks = this.tasksSubject.value.map(task => {
+
+        if (task.id !== id) return task;
+
+        return {
+        ...task,
+        status,
+        completedAt: status === 'done' ? new Date() : undefined
+        };
+
+    });
+
+    this.tasksSubject.next(tasks);
+
+    }
   updateFilter(newFilter: any) {
     this.filterSubject.next(newFilter);
   }

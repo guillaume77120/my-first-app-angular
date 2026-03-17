@@ -1,10 +1,12 @@
 .input-tache{
     display: flex;
+    gap: 10px;
 }
 
 .right{
     display: flex;
     margin-left: auto;
+    gap: 10px;
 }
 
 input{
@@ -12,6 +14,7 @@ input{
     border-radius: 5px;
     background-color: white;
     padding-left: 5px;
+    width: -moz-available;
 }
 
 select{
@@ -23,7 +26,7 @@ select{
 
 button{
     background-color: rgb(6, 199, 173);
-    padding: 5px 10px 5px 10px;
+    padding: 5px 12px 5px 12px;
     border-radius: 5px;
     color: white;
 }
