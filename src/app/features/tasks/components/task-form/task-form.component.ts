@@ -37,11 +37,11 @@ export class TaskFormComponent {
         description: formValues.description,
         priority: formValues.priority,
         status: 'todo', // Par défaut
-        createdAt: new Date()
+        createdAt: new Date().toISOString()
       };
 
       // On l'envoie au service
-      this.taskService.addTask(newTask);
+      this.taskService.addTask(newTask)?.subscribe();
 
       // On vide le formulaire pour la suite
       this.taskForm.reset({ priority: 'medium' });

@@ -1,17 +1,21 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, map } from 'rxjs';
+import { Injectable, inject} from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import {BehaviorSubject, combineLatest, map, tap} from 'rxjs';
 import { Task } from '../../models/task.model';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root' // Le service est disponible partout (Singleton)
+  providedIn: 'root' // Le service est disponible partout (Singleton).
 })
 export class TaskService {
-  // 1. La source de données (Privée pour ne pas être modifiée de l'extérieur)
+  private http = inject(HttpClient);
+  private readonly API = `${environment.apiUrl}/tasks`;
+
   private tasksSubject = new BehaviorSubject<Task[]>([]);
   private filterSubject = new BehaviorSubject< 'all' | 'low' | 'medium' | 'high'>('all');
 
   setFilter(priority: any) {
-    this.filterSubject.next(priority); 
+    this.filterSubject.next(priority);
   }
 
   filteredTasks$ = combineLatest([
@@ -28,40 +32,38 @@ export class TaskService {
   // Le '$' à la fin est une convention de nommage pour les Observables.
   tasks$ = this.tasksSubject.asObservable();
 
-  constructor() {
-    // Optionnel : Charger des données initiales ou depuis le LocalStorage ici
+  loadTasks() {
+    return this.http.get<Task[]>(this.API).pipe(
+      tap(tasks => this.tasksSubject.next(tasks))
+    );
   }
 
-  // 3. Méthode pour ajouter une tâche
-  addTask(newTask: Task): void {
-    const currentTasks = this.tasksSubject.value; // On récupère l'état actuel
-    this.tasksSubject.next([...currentTasks, newTask]); // On émet un nouveau tableau (Immuabilité)
+  addTask(newTask: Task) {
+    return this.http.post<Task>(this.API, newTask).pipe(
+      tap(() => this.loadTasks().subscribe())
+    );
   }
 
-  // 4. Méthode pour supprimer une tâche
-  deleteTask(id: string): void {
-    const updatedTasks = this.tasksSubject.value.filter(task => task.id !== id);
-    this.tasksSubject.next(updatedTasks);
+  // ✅ DELETE — supprime une tâche
+  deleteTask(id: string) {
+    return this.http.delete(`${this.API}/${id}`).pipe(
+      tap(() => this.loadTasks().subscribe())
+    );
   }
 
+  // ✅ PUT — met à jour le statut
   updateStatus(id: string, status: Task['status']) {
+    const task = this.tasksSubject.value.find(t => t.id === id);
+    if (!task) return;
 
-    const tasks = this.tasksSubject.value.map(task => {
+    const updated: Task = {
+      ...task,
+      status,
+      completedAt: status === 'done' ? new Date().toISOString() : undefined
+    };
 
-        if (task.id !== id) return task;
-
-        return {
-        ...task,
-        status,
-        completedAt: status === 'done' ? new Date() : undefined
-        };
-
-    });
-
-    this.tasksSubject.next(tasks);
-
-    }
-  updateFilter(newFilter: any) {
-    this.filterSubject.next(newFilter);
+    return this.http.put<Task>(`${this.API}/${id}`, updated).pipe(
+      tap(() => this.loadTasks().subscribe())
+    );
   }
 }

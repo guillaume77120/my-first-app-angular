@@ -15,26 +15,26 @@ import { MatIconModule } from "@angular/material/icon";
 
 export class TaskListComponent implements OnInit {
     private taskService = inject(TaskService);
-    
+
     tasks$!: Observable<Task[]>;
-    
+
     ngOnInit(): void {
         this.tasks$ = this.taskService.filteredTasks$;
     }
     onDelete(id: string) {
         if (confirm('Êtes-vous sur de vouloir supprimer cette tâche ?')) {
-            this.taskService.deleteTask(id);
+            this.taskService.deleteTask(id)?.subscribe();
         }
     }
     applyFilter(val: string) {
         this.taskService.setFilter(val);
     }
-    
+
     toggleDone(task: Task) {
         const newStatus = task.status === 'done'
             ? 'todo'
             : 'done';
 
-        this.taskService.updateStatus(task.id, newStatus);
+        this.taskService.updateStatus(task.id, newStatus)?.subscribe();
     }
-}   
+}
